@@ -5,6 +5,9 @@
 #include <vector>
 #include <algorithm>
 #include <limits.h>
+#include <stack>
+#include <queue>
+#include <deque>
 #include <vector>
 #include <math.h>
 #include <string>
