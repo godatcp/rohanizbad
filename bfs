@@ -1,0 +1,50 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+#define maxn 100005
+vector<int> adj[maxn];
+vector<bool> vis(maxn,false);
+vector<int> level(maxn,INT_MAX);
+vector<int> pred(maxn,INT_MAX);
+void bfs(int node){
+    queue<int> q;
+    q.push(node);
+    vis[node] = true;
+    level[node] = 0;
+    while(!q.empty()){
+        node = q.front();
+        q.pop();
+        for(int i : adj[node]){
+            if(vis[i]){continue;}
+            q.push(i);
+            level[i] = level[node]+1;
+            pred[i] = node;
+            vis[i] = true;
+        }
+    }
+}
+int main(){
+    int N,M; cin >> N >> M;
+    for(int i = 0;i < M;i++){
+        int a,b; cin >> a >> b;
+        adj[a].push_back(b); adj[b].push_back(a);
+    }
+    bfs(1);
+    if(level[N] == INT_MAX){
+        cout << "IMPOSSIBLE" << endl;
+    }
+    else{
+        int x = N;
+        vector<int> ans; ans.push_back(N);
+        while(x!=1){
+            x = pred[x];
+            ans.push_back(x);
+        }
+        reverse(ans.begin(),ans.end());
+        cout << ans.size() << endl;
+        for(int i : ans){
+            cout << i << " ";
+        }
+    }
+}
