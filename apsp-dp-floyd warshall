@@ -1,0 +1,50 @@
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <limits.h>
+using namespace std;
+#define maxn 1000
+using ll = long long;
+ll graph[maxn][maxn];
+ll a[maxn][maxn];
+ll N;
+void floyd_warshal(){
+    for(ll i = 0;i < maxn;i++){
+        for(ll j = 0;j < maxn;j++){
+            a[i][j] = graph[i][j];
+        }
+    }
+    for(ll k = 1;k <= N;k++){
+        for(ll i = 1;i <= N;i++){
+            for(ll j = 1;j <= N;j++){
+                ll b = a[i][k]+a[k][j];
+                if(a[i][k] == __LONG_LONG_MAX__ || a[k][j] == __LONG_LONG_MAX__){
+                    b = __LONG_LONG_MAX__;
+                }
+                if(0 > b){b = __LONG_LONG_MAX__;}
+                a[i][j] = min(b,a[i][j]);
+            }
+        }
+    }
+}
+int main(){
+    for(int i = 1;i <= maxn;i++){
+        for(int j = 1;j <= maxn;j++){
+            graph[i][j] = __LONG_LONG_MAX__;
+        }
+    }
+    ll M,Q; cin >> N >> M >> Q;
+    for(ll i = 1;i <= N;i++){
+        graph[i][i] = 0;
+    }
+    for(ll i = 1;i < M;i++){
+        ll a,b,w; cin >> a >> b >> w;
+        graph[a][b] = min(graph[a][b], w);
+        graph[b][a] = min(graph[b][a], w);
+    }
+    floyd_warshal();
+    for(ll i = 0;i < Q;i++){
+        ll a1,b1; cin >> a1 >> b1;
+        if(a[a1][b1] == __LONG_LONG_MAX__ ){cout << -1 << endl;} else{cout << a[a1][b1] << endl;}
+    }
+}
